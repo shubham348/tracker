@@ -6,8 +6,11 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useNavigate } from "react-router-dom";
 import { useTrackerStore } from "../store/useTrackerStore";
+import { getRepeatSummary } from "../utils/repeatSummary";
 
 function TaskCard({ task, completed, dateKey, disableToggle }) {
   const navigate = useNavigate();
@@ -28,11 +31,12 @@ function TaskCard({ task, completed, dateKey, disableToggle }) {
         filter: completed ? "blur(0.5px)" : "none",
       }}
     >
-      {/* LEFT: COMPLETE / UNCOMPLETE */}
+      {/* LEFT SIDE */}
       <Box
         display="flex"
         alignItems="center"
-        gap={2}
+        gap={1.5}
+        minWidth={0} // 🔑 REQUIRED for ellipsis
         sx={{ cursor: disableToggle ? "default" : "pointer" }}
         onClick={() => {
           if (!disableToggle) {
@@ -40,23 +44,58 @@ function TaskCard({ task, completed, dateKey, disableToggle }) {
           }
         }}
       >
-        <Checkbox checked={!!completed} disabled={disableToggle} />
-        <Typography fontSize={22}>{task.emoji || "🙂"}</Typography>
-        <Typography>{task.title}</Typography>
+        {/* ROUND CHECKBOX */}
+        <Checkbox
+          checked={!!completed}
+          disabled={disableToggle}
+          icon={<RadioButtonUncheckedIcon />}
+          checkedIcon={<CheckCircleIcon />}
+        />
+
+        {/* EMOJI */}
+        <Typography fontSize={22}>
+          {task.emoji || "🙂"}
+        </Typography>
+
+        {/* TITLE + FREQUENCY */}
+        <Box minWidth={0}>
+          <Typography
+            fontWeight={500}
+            sx={{
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              maxWidth: { xs: 160, sm: 260 },
+            }}
+          >
+            {task.title}
+          </Typography>
+
+          <Typography
+            variant="caption"
+            color="text.secondary"
+          >
+            {getRepeatSummary(task.repeat)}
+          </Typography>
+        </Box>
       </Box>
 
-      {/* RIGHT: ACTIONS */}
-      <Box>
+      {/* RIGHT ACTIONS */}
+      <Box display="flex" alignItems="center">
         <IconButton
+          size="small"
           onClick={() => navigate(`/edit/${task.id}`)}
+          sx={{ color: "#2563EB" }} // blue
         >
-          <EditIcon />
+          <EditIcon fontSize="small" />
         </IconButton>
 
         <IconButton
+          size="small"
           onClick={() => deleteTask(task.id)}
+          sx={{ color: "#2563EB" }} // blue
         >
-          <DeleteIcon />
+          <DeleteIcon fontSize="small" />
         </IconButton>
       </Box>
     </Box>
