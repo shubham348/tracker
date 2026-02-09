@@ -9,48 +9,41 @@ function EditTask() {
 
   const tasks = useTrackerStore((s) => s.tasks);
   const updateTask = useTrackerStore((s) => s.updateTask);
-  const loadRepeatFromTask = useTrackerStore((s) => s.loadRepeatFromTask);
-  const repeatDraft = useTrackerStore((s) => s.repeatDraft);
+
+  const setCreateDraft = useTrackerStore((s) => s.setCreateDraft);
+  const setRepeatDraft = useTrackerStore((s) => s.setRepeatDraft);
 
   const task = tasks.find((t) => t.id === id);
 
-  // Load repeat config safely
+  // 🔁 PRELOAD DRAFTS ONCE
   useEffect(() => {
-    if (task) {
-      loadRepeatFromTask(
-        task.repeat
-          ? {
-              type: task.repeat.type || "daily",
-              interval: task.repeat.interval || 1,
-              weekDays: task.repeat.weekDays || [],
-              monthDates: task.repeat.monthDates || [],
-            }
-          : {
-              type: "daily",
-              interval: 1,
-              weekDays: [],
-              monthDates: [],
-            }
-      );
+    if (!task) return;
+
+    // preload title + emoji
+    setCreateDraft({
+      title: task.title,
+      emoji: task.emoji || "🙂",
+    });
+
+    // preload repeat
+    if (task.repeat) {
+      setRepeatDraft({
+        type: task.repeat.type || "daily",
+        interval: task.repeat.interval || 1,
+        weekDays: task.repeat.weekDays || [],
+        monthDates: task.repeat.monthDates || [],
+      });
     }
   }, [task]);
 
   if (!task) return null;
-
-  // ✅ SAFE CHECK (NO UNDEFINED)
-  const hasRepeatConfigured =
-    repeatDraft &&
-    ((repeatDraft.interval ?? 1) !== 1 ||
-      (repeatDraft.weekDays?.length ?? 0) > 0 ||
-      (repeatDraft.monthDates?.length ?? 0) > 0);
 
   const handleUpdate = ({ title, emoji }) => {
     updateTask({
       ...task,
       title,
       emoji,
-      repeatEnabled: hasRepeatConfigured,
-      repeat: hasRepeatConfigured ? repeatDraft : null,
+      repeat: task.repeat ? task.repeat : null,
     });
 
     navigate("/");
@@ -58,11 +51,8 @@ function EditTask() {
 
   return (
     <TaskForm
-      initialTitle={task.title}
-      initialEmoji={task.emoji || "🙂"}
-      repeatDraft={repeatDraft}
-      onSubmit={handleUpdate}
       submitLabel="Save"
+      onSubmit={handleUpdate}
     />
   );
 }
