@@ -2,12 +2,12 @@ import { Box, Typography } from "@mui/material";
 
 function AppLayout({ title, subtitle, children }) {
   return (
-    <Box minHeight="100vh" bgcolor="background.default">
+    <Box minHeight="100vh" style={{backgroundImage: "linear-gradient(to top, #30cfd0 0%, #330867 100%)"}}>
       {/* HEADER */}
       <Box
         sx={{
-          background:
-            "linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)",
+          // background:
+          //   "linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)",
           color: "#fff",
           pt: { xs: 3, sm: 5 },
           pb: { xs: 4, sm: 6 },
@@ -16,8 +16,8 @@ function AppLayout({ title, subtitle, children }) {
         }}
       >
         <Typography
-          variant="h4"
-          fontWeight={800}
+          variant="h3"
+          fontWeight={700}
         >
           {title}
         </Typography>
