@@ -1,12 +1,11 @@
-import { Box, Typography, Fab, IconButton } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Box, Typography, IconButton } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTrackerStore } from "../store/useTrackerStore";
 import { toDateKey, shouldShowTask } from "../utils/date";
 import DayScroller from "../components/DayScroller";
 import TaskCard from "../components/TaskCard";
-import AppLayout from "../components/AppLayout";
+import EmptyState from "../components/EmptyState";
 
 function Home() {
   const navigate = useNavigate();
@@ -19,16 +18,22 @@ function Home() {
 
   const todayKey = toDateKey(new Date());
   const disableToggle = selectedKey > todayKey;
+
+  const visibleTasks = tasks.filter((task) =>
+    shouldShowTask(task, selectedKey)
+  );
+
+
   return (
 
     <Box sx={{
-    flex: 1,                // 🔑 THIS IS THE FIX
-    display: "flex",
-    flexDirection: "column",
-    px: 2,
-    pt: 2,
-    overflow: "hidden",     // prevents double scroll
-  }}>
+      flex: 1,                // 🔑 THIS IS THE FIX
+      display: "flex",
+      flexDirection: "column",
+      px: 2,
+      pt: 2,
+      overflow: "hidden",     // prevents double scroll
+    }}>
       {/* DAY SCROLLER */}
       <DayScroller
         selectedDate={selectedDate}
@@ -63,20 +68,17 @@ function Home() {
           +
         </IconButton>
       </Box>
-    <Box
-  sx={{
-    height: "calc(70vh - 120px)", // 🔑 FIXED HEIGHT
-    overflowY: "auto",
-    pr: 0.5,
-  }}
->
-
-
-
-
-        {tasks
-          .filter((task) => shouldShowTask(task, selectedKey))
-          .map((task) => {
+      <Box
+        sx={{
+          height: "calc(70vh - 120px)",
+          overflowY: "auto",
+          pr: 0.5,
+        }}
+      >
+        {visibleTasks.length === 0 ? (
+          <EmptyState onAdd={() => navigate("/create")} />
+        ) : (
+          visibleTasks.map((task) => {
             const completedMap = task.completed || {};
             const completed = Boolean(completedMap[selectedKey]);
 
@@ -89,7 +91,9 @@ function Home() {
                 disableToggle={disableToggle}
               />
             );
-          })}
+          })
+        )}
+
       </Box>
     </Box>
   );
