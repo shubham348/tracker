@@ -36,6 +36,7 @@ function TaskCard({ task, completed, dateKey, disableToggle }) {
         borderRadius={2}
         bgcolor="#E0F2FE"
         display="flex"
+        gap="1rem"
         alignItems="center"
         justifyContent="space-between"
         sx={{
@@ -48,7 +49,8 @@ function TaskCard({ task, completed, dateKey, disableToggle }) {
           display="flex"
           alignItems="center"
           gap={1.5}
-          minWidth={0}
+          flex={1}        
+          minWidth={0}   
           onClick={handleOpenActions}
           sx={{
             cursor: disableToggle
@@ -78,14 +80,14 @@ function TaskCard({ task, completed, dateKey, disableToggle }) {
           </Typography>
 
           {/* TITLE + REPEAT */}
-          <Box minWidth={0}>
+          <Box minWidth={0}
+            flex={1}  >
             <Typography
               fontWeight={500}
               sx={{
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
-                maxWidth: { xs: 160, sm: 260 },
               }}
             >
               {task.title}

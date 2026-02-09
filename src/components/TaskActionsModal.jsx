@@ -52,10 +52,7 @@ function TaskActionsModal({
           fontWeight={600}
           mt={1}
           sx={{
-            maxWidth: "90%",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
+            whiteSpace: "wrap",
           }}
         >
           {task.title}
