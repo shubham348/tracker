@@ -21,7 +21,14 @@ function Home() {
   const disableToggle = selectedKey > todayKey;
   return (
 
-    <Box p={3} pb={10}>
+    <Box sx={{
+    flex: 1,                // 🔑 THIS IS THE FIX
+    display: "flex",
+    flexDirection: "column",
+    px: 2,
+    pt: 2,
+    overflow: "hidden",     // prevents double scroll
+  }}>
       {/* DAY SCROLLER */}
       <DayScroller
         selectedDate={selectedDate}
@@ -56,11 +63,14 @@ function Home() {
           +
         </IconButton>
       </Box>
-      <Box sx={{
-        flex: 1,
-        overflowY: "auto",
-        pr: 0.5,
-      }}>
+    <Box
+  sx={{
+    height: "calc(70vh - 120px)", // 🔑 FIXED HEIGHT
+    overflowY: "auto",
+    pr: 0.5,
+  }}
+>
+
 
 
 
