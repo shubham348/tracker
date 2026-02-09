@@ -12,19 +12,71 @@ function RepeatInline() {
   const setRepeatDraft = useTrackerStore((s) => s.setRepeatDraft);
 
   const { type, interval, weekDays, monthDates } = repeatDraft;
+
   const scrollRef = useRef(null);
+
+  // 🔒 Remember interval per type (LOCAL, SAFE)
+  const lastIntervalsRef = useRef({
+    daily: interval,
+    weekly: interval,
+    monthly: interval,
+  });
+
+  // Keep current interval in sync
+  useEffect(() => {
+    lastIntervalsRef.current[type] = interval;
+  }, [interval, type]);
 
   // Center selected interval
   useEffect(() => {
     if (!scrollRef.current) return;
+
     const itemHeight = 44;
     const containerHeight = 140;
 
     scrollRef.current.scrollTo({
-      top: (interval - 1) * itemHeight - containerHeight / 2 + itemHeight / 2,
+      top:
+        (interval - 1) * itemHeight -
+        containerHeight / 2 +
+        itemHeight / 2,
       behavior: "smooth",
     });
   }, [interval]);
+
+  // ✅ TYPE SWITCH WITH PER-TYPE INTERVAL RESTORE
+  const handleTypeChange = (_, newType) => {
+    if (!newType || newType === type) return;
+
+    const restoredInterval =
+      lastIntervalsRef.current[newType] || 1;
+
+    if (newType === "daily") {
+      setRepeatDraft({
+        type: "daily",
+        interval: restoredInterval,
+        weekDays: [],
+        monthDates: [],
+      });
+    }
+
+    if (newType === "weekly") {
+      setRepeatDraft({
+        type: "weekly",
+        interval: restoredInterval,
+        weekDays: [],
+        monthDates: [],
+      });
+    }
+
+    if (newType === "monthly") {
+      setRepeatDraft({
+        type: "monthly",
+        interval: restoredInterval,
+        weekDays: [],
+        monthDates: [],
+      });
+    }
+  };
 
   const toggleWeekDay = (day) => {
     setRepeatDraft({
@@ -52,7 +104,7 @@ function RepeatInline() {
       <ToggleButtonGroup
         value={type}
         exclusive
-        onChange={(e, v) => v && setRepeatDraft({ type: v })}
+        onChange={handleTypeChange}
         fullWidth
       >
         <ToggleButton value="daily">Daily</ToggleButton>
@@ -60,7 +112,7 @@ function RepeatInline() {
         <ToggleButton value="monthly">Monthly</ToggleButton>
       </ToggleButtonGroup>
 
-      {/* WEEKLY MULTI SELECT */}
+      {/* WEEKLY */}
       {type === "weekly" && (
         <Box mt={3}>
           <Typography mb={1}>Repeat on</Typography>
@@ -90,7 +142,7 @@ function RepeatInline() {
         </Box>
       )}
 
-      {/* MONTHLY MULTI DATE */}
+      {/* MONTHLY */}
       {type === "monthly" && (
         <Box mt={3}>
           <Typography mb={1}>Select dates</Typography>

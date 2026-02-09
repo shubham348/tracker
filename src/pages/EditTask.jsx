@@ -12,20 +12,19 @@ function EditTask() {
 
   const setCreateDraft = useTrackerStore((s) => s.setCreateDraft);
   const setRepeatDraft = useTrackerStore((s) => s.setRepeatDraft);
+  const repeatDraft = useTrackerStore((s) => s.repeatDraft);
 
   const task = tasks.find((t) => t.id === id);
 
-  // 🔁 PRELOAD DRAFTS ONCE
+  // 🔁 PRELOAD DRAFTS
   useEffect(() => {
     if (!task) return;
 
-    // preload title + emoji
     setCreateDraft({
       title: task.title,
       emoji: task.emoji || "🙂",
     });
 
-    // preload repeat
     if (task.repeat) {
       setRepeatDraft({
         type: task.repeat.type || "daily",
@@ -43,18 +42,13 @@ function EditTask() {
       ...task,
       title,
       emoji,
-      repeat: task.repeat ? task.repeat : null,
+      repeat: repeatDraft, // ✅ USE UPDATED FREQUENCY
     });
 
     navigate("/");
   };
 
-  return (
-    <TaskForm
-      submitLabel="Save"
-      onSubmit={handleUpdate}
-    />
-  );
+  return <TaskForm submitLabel="Save" onSubmit={handleUpdate} />;
 }
 
 export default EditTask;

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import TaskForm from "../components/TaskForm";
 import { useTrackerStore } from "../store/useTrackerStore";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +12,12 @@ function CreateTask() {
   const clearCreateDraft = useTrackerStore((s) => s.clearCreateDraft);
   const clearRepeatDraft = useTrackerStore((s) => s.clearRepeatDraft);
 
+  // ✅ RESET DRAFTS WHEN CREATE SCREEN OPENS
+  useEffect(() => {
+    clearCreateDraft();
+    clearRepeatDraft();
+  }, []);
+
   const handleCreate = ({ title, emoji }) => {
     if (!title.trim()) return;
 
@@ -18,7 +25,7 @@ function CreateTask() {
       id: crypto.randomUUID(),
       title,
       emoji,
-      createdAt: toDateKey(), // 🔑 ensures it shows today
+      createdAt: toDateKey(),
       repeatEnabled: true,
       repeat: repeatDraft,
       completed: {},
