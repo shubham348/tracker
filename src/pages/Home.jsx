@@ -47,9 +47,18 @@ function Home() {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Typography variant="h6">
-          Tasks
-        </Typography>
+        <Box mb={2}>
+          <Typography fontWeight={700}>
+            Today’s tasks
+          </Typography>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+          >
+            Stay consistent, one habit at a time
+          </Typography>
+        </Box>
+
 
         {/* ADD BUTTON (SQUARE, INLINE) */}
         <IconButton
