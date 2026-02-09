@@ -16,7 +16,7 @@ function AppLayout({ title, subtitle, children }) {
         }}
       >
         <Typography
-          variant="h5"
+          variant="h4"
           fontWeight={800}
         >
           {title}
