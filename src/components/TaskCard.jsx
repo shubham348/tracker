@@ -23,7 +23,7 @@ function TaskCard({ task, completed, dateKey, disableToggle }) {
 
   const isDesktop = useMediaQuery("(min-width:900px)");
   const [open, setOpen] = useState(false);
-
+  const bgColor = task.color || "#DBEAFE"; 
   const handleOpenActions = () => {
     if (!isDesktop) setOpen(true);
   };
@@ -34,13 +34,13 @@ function TaskCard({ task, completed, dateKey, disableToggle }) {
         p={2}
         mb={2}
         borderRadius={2}
-        bgcolor="#E0F2FE"
+        bgcolor={bgColor}
         display="flex"
         gap="1rem"
         alignItems="center"
         justifyContent="space-between"
         sx={{
-          opacity: completed ? 0.5 : 1,
+          opacity: completed ? 0.7 : 1,
           filter: completed ? "blur(0.5px)" : "none",
         }}
       >

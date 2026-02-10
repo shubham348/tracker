@@ -23,6 +23,7 @@ function EditTask() {
     setCreateDraft({
       title: task.title,
       emoji: task.emoji || "🙂",
+      color: task.color || "#DBEAFE",
     });
 
     if (task.repeat) {
@@ -36,13 +37,13 @@ function EditTask() {
   }, [task]);
 
   if (!task) return null;
-
-  const handleUpdate = ({ title, emoji }) => {
+  const handleUpdate = ({ title, emoji, color }) => {
     updateTask({
       ...task,
       title,
       emoji,
-      repeat: repeatDraft, // ✅ USE UPDATED FREQUENCY
+      color, // ✅ UPDATE COLOR
+      repeat: repeatDraft,
     });
 
     navigate("/");

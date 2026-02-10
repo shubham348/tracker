@@ -9,14 +9,19 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { useNavigate } from "react-router-dom";
 import { useTrackerStore } from "../store/useTrackerStore";
 import RepeatInline from "./RepeatInline";
+import TaskColorPicker from "./TaskColorPicker";
 
 const EMOJIS = ["🙂", "🔥", "💪", "🧠", "🥗", "🏃"];
 
 function TaskForm({ onSubmit, submitLabel }) {
   const navigate = useNavigate();
 
-  const { title, emoji } = useTrackerStore((s) => s.createDraft);
-  const setCreateDraft = useTrackerStore((s) => s.setCreateDraft);
+  const { title, emoji, color } = useTrackerStore(
+    (s) => s.createDraft
+  );
+  const setCreateDraft = useTrackerStore(
+    (s) => s.setCreateDraft
+  );
 
   return (
     <Box p={3}>
@@ -24,7 +29,7 @@ function TaskForm({ onSubmit, submitLabel }) {
         <ArrowBackIosNewIcon />
       </IconButton>
 
-      {/* Emoji */}
+      {/* EMOJI */}
       <Box mt={2} display="flex" gap={1}>
         {EMOJIS.map((e) => (
           <Box
@@ -34,7 +39,8 @@ function TaskForm({ onSubmit, submitLabel }) {
               fontSize: 26,
               cursor: "pointer",
               opacity: emoji === e ? 1 : 0.4,
-              transform: emoji === e ? "scale(1.2)" : "scale(1)",
+              transform:
+                emoji === e ? "scale(1.2)" : "scale(1)",
             }}
           >
             {e}
@@ -42,16 +48,26 @@ function TaskForm({ onSubmit, submitLabel }) {
         ))}
       </Box>
 
-      {/* Title */}
+      {/* TITLE */}
       <TextField
         fullWidth
         label="Task name"
         value={title}
-        onChange={(e) => setCreateDraft({ title: e.target.value })}
+        onChange={(e) =>
+          setCreateDraft({ title: e.target.value })
+        }
         sx={{ mt: 3 }}
+        inputProps={{ maxLength: 50 }}
+        helperText={`${title.length}/50`}
       />
 
-      {/* INLINE REPEAT */}
+      {/* COLOR PICKER */}
+      <TaskColorPicker
+        value={color}
+        onChange={(c) => setCreateDraft({ color: c })}
+      />
+
+      {/* REPEAT */}
       <RepeatInline />
 
       {/* SUBMIT */}
@@ -61,7 +77,7 @@ function TaskForm({ onSubmit, submitLabel }) {
         sx={{ mt: 4 }}
         onClick={() => {
           if (!title.trim()) return;
-          onSubmit({ title, emoji });
+          onSubmit({ title, emoji, color });
         }}
       >
         {submitLabel}

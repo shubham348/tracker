@@ -18,13 +18,14 @@ function CreateTask() {
     clearRepeatDraft();
   }, []);
 
-  const handleCreate = ({ title, emoji }) => {
+  const handleCreate = ({ title, emoji, color }) => {
     if (!title.trim()) return;
 
     addTask({
       id: crypto.randomUUID(),
       title,
       emoji,
+      color, // ✅ SAVE COLOR
       createdAt: toDateKey(),
       repeatEnabled: true,
       repeat: repeatDraft,
@@ -35,6 +36,7 @@ function CreateTask() {
     clearRepeatDraft();
     navigate("/");
   };
+
 
   return <TaskForm submitLabel="Create" onSubmit={handleCreate} />;
 }

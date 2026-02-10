@@ -50,6 +50,7 @@ export const useTrackerStore = create(
       createDraft: {
         title: "",
         emoji: "🙂",
+        color: "#DBEAFE",
       },
 
       setCreateDraft: (data) =>
@@ -59,7 +60,7 @@ export const useTrackerStore = create(
 
       clearCreateDraft: () =>
         set({
-          createDraft: { title: "", emoji: "🙂" },
+          createDraft: { title: "", emoji: "🙂", color: "#DBEAFE", },
         }),
 
       // =====================
