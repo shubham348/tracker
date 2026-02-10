@@ -23,7 +23,7 @@ function WaterModal({ open, onClose, onSubmit }) {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-    const [value, setValue] = useState("500");
+    const [value, setValue] = useState("0");
 
     const addDigit = (d) => {
         setValue((v) => (v === "0" ? String(d) : v + d));
@@ -46,7 +46,7 @@ function WaterModal({ open, onClose, onSubmit }) {
             fullWidth
             maxWidth="sm"
             TransitionProps={{
-                onExited: () => setValue("500"), // ✅ reset AFTER close animation
+                onExited: () => setValue("0"), // ✅ reset AFTER close animation
             }}
             PaperProps={{
                 sx: {
