@@ -6,9 +6,15 @@ import { toDateKey, shouldShowTask } from "../utils/date";
 import DayScroller from "../components/DayScroller";
 import TaskCard from "../components/TaskCard";
 import EmptyState from "../components/EmptyState";
+import WaterCard from "../components/WaterCard";
+import WaterModal from "../components/WaterModal";
 
 function Home() {
   const navigate = useNavigate();
+  const water = useTrackerStore((s) => s.water);
+  const addWater = useTrackerStore((s) => s.addWater);
+  const [waterOpen, setWaterOpen] = useState(false);
+
 
   const tasks = useTrackerStore((s) => s.tasks);
 
@@ -16,12 +22,16 @@ function Home() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const selectedKey = toDateKey(selectedDate);
 
+  const dayWater = water[selectedKey] || { goal: 3035, entries: [] };
+  const total = dayWater.entries.reduce((a, b) => a + b, 0);
+
   const todayKey = toDateKey(new Date());
   const disableToggle = selectedKey > todayKey;
 
   const visibleTasks = tasks.filter((task) =>
     shouldShowTask(task, selectedKey)
   );
+
 
 
   return (
@@ -77,6 +87,7 @@ function Home() {
           +
         </IconButton>
       </Box>
+
       <Box
         sx={{
           height: "calc(70vh - 120px)",
@@ -84,6 +95,20 @@ function Home() {
           pr: 0.5,
         }}
       >
+        <WaterCard
+          total={total}
+          goal={dayWater.goal}
+          onAdd={() => setWaterOpen(true)}
+        />
+
+        <WaterModal
+          open={waterOpen}
+          onClose={() => setWaterOpen(false)}
+          onSubmit={(amt) => {
+            addWater(selectedKey, amt);
+            setWaterOpen(false);
+          }}
+        />
         {visibleTasks.length === 0 ? (
           <EmptyState onAdd={() => navigate("/create")} />
         ) : (

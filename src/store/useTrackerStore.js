@@ -8,6 +8,30 @@ export const useTrackerStore = create(
       // TASKS
       // =====================
       tasks: [],
+      // in useTrackerStore.js
+      water: {},
+
+      addWater: (dateKey, amount) =>
+        set((state) => {
+          const day = state.water[dateKey] || { goal: 3035, entries: [] };
+
+          return {
+            water: {
+              ...state.water,
+              [dateKey]: {
+                ...day,
+                entries: [...day.entries, amount],
+              },
+            },
+          };
+        }),
+
+      resetWaterDay: (dateKey) =>
+        set((state) => {
+          const copy = { ...state.water };
+          delete copy[dateKey];
+          return { water: copy };
+        }),
 
       addTask: (task) =>
         set((state) => ({
