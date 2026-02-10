@@ -8,11 +8,15 @@ export const getScrollableDays = () => {
 };
 
 // ✅ SAFE FOR Date OR string
-export const toDateKey = (input = new Date()) => {
-  if (typeof input === "string") return input;
-  if (input instanceof Date)
-    return input.toISOString().split("T")[0];
-  return new Date(input).toISOString().split("T")[0];
+export const toDateKey = (date = new Date()) => {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`; // LOCAL DATE KEY
 };
 
 export const shouldShowTask = (task, dateKey) => {
