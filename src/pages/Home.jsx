@@ -51,13 +51,13 @@ function Home() {
       />
 
       <Box
-        mt={3}
+        mt={2}
         mb={2}
         display="flex"
         alignItems="center"
         justifyContent="space-between"
       >
-        <Box mb={2}>
+        <Box >
           <Typography fontWeight={700}>
             Today’s tasks
           </Typography>
@@ -92,7 +92,9 @@ function Home() {
         sx={{
           height: "calc(70vh - 120px)",
           overflowY: "auto",
-          pr: 0.5,
+          background: "#cbe3f930",
+          borderRadius:"16px",
+          padding:"12px"
         }}
       >
         <WaterCard
