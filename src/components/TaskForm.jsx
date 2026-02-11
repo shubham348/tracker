@@ -24,13 +24,15 @@ function TaskForm({ onSubmit, submitLabel }) {
   );
 
   return (
-    <Box p={3}>
+    <Box>
       <IconButton onClick={() => navigate(-1)}>
         <ArrowBackIosNewIcon />
       </IconButton>
 
       {/* EMOJI */}
-      <Box mt={2} display="flex" gap={1}>
+      <Box mt={2} display="flex" gap={1} sx={{
+        overflowY: "hidden"
+      }} >
         {EMOJIS.map((e) => (
           <Box
             key={e}

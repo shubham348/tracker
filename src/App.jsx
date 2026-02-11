@@ -10,7 +10,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/create" element={<CreateTask />} />
-        <Route path="/repeat" element={<Repeat />} />
         <Route path="/edit/:id" element={<EditTask />} />
       </Routes>
     </AppLayout>
