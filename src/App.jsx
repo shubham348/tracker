@@ -6,7 +6,7 @@ import EditTask from "./pages/EditTask";
 import AppLayout from "./components/AppLayout";
 function App() {
   return (
-    <AppLayout title="Habit Tracker">
+    <AppLayout title="Rituals">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/create" element={<CreateTask />} />
