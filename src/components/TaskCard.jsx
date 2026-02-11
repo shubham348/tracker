@@ -23,9 +23,9 @@ function TaskCard({ task, completed, dateKey, disableToggle }) {
 
   const isDesktop = useMediaQuery("(min-width:900px)");
   const [open, setOpen] = useState(false);
-  const bgColor = task.color || "#DBEAFE"; 
+  const bgColor = task.color || "#DBEAFE";
   const handleOpenActions = () => {
-    if (!isDesktop) setOpen(true);
+   setOpen(true);
   };
 
   return (
@@ -49,8 +49,8 @@ function TaskCard({ task, completed, dateKey, disableToggle }) {
           display="flex"
           alignItems="center"
           gap={1.5}
-          flex={1}        
-          minWidth={0}   
+          flex={1}
+          minWidth={0}
           onClick={handleOpenActions}
           sx={{
             cursor: disableToggle
@@ -60,20 +60,6 @@ function TaskCard({ task, completed, dateKey, disableToggle }) {
                 : "pointer",
           }}
         >
-          {/* CHECKBOX */}
-          <Checkbox
-            checked={!!completed}
-            disabled={disableToggle}
-            icon={<RadioButtonUncheckedIcon />}
-            checkedIcon={<CheckCircleIcon />}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (!disableToggle) {
-                toggleTask(dateKey, task.id);
-              }
-            }}
-          />
-
           {/* EMOJI */}
           <Typography fontSize={22}>
             {task.emoji || "🙂"}
@@ -101,39 +87,22 @@ function TaskCard({ task, completed, dateKey, disableToggle }) {
             </Typography>
           </Box>
         </Box>
-        {!isDesktop && (
-          <IconButton
-            size="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpen(true);
-            }}
-          >
-            <MoreHorizIcon />
-          </IconButton>
-        )}
 
-        {/* DESKTOP ACTION ICONS */}
-        {isDesktop && (
-          <Box>
-            <IconButton
-              size="small"
-              onClick={() => navigate(`/edit/${task.id}`)}
-              sx={{ color: "#2563EB" }}
-            >
-              <EditIcon fontSize="small" />
-            </IconButton>
-
-            <IconButton
-              size="small"
-              onClick={() => deleteTask(task.id)}
-              sx={{ color: "#2563EB" }}
-            >
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-          </Box>
-        )}
+        {/* CHECKBOX */}
+        <Checkbox
+          checked={!!completed}
+          disabled={disableToggle}
+          icon={<RadioButtonUncheckedIcon />}
+          checkedIcon={<CheckCircleIcon />}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (!disableToggle) {
+              toggleTask(dateKey, task.id);
+            }
+          }}
+        />
       </Box>
+
 
       {/* MOBILE ACTION MODAL */}
       <TaskActionsModal
